@@ -153,7 +153,7 @@ const CartPage = () => {
             {/* Refresh Cart Button */}
             <div style={{ marginBottom: '20px', textAlign: 'center' }}>
                 <Typography variant="body1" style={{ color: 'red', fontWeight: 'bold' }}>
-                    Sorry for the inconvenience! If you are facing any issues in the cart, please press the button below:
+                    Sorry for the inconvenience! If you are facing any issues in the cart, please press the button below or Clear Cart:
                 </Typography>
                 <Button
                     variant="contained"
@@ -303,10 +303,10 @@ const CartPage = () => {
                                     {/* Product Details */}
                                     <CardContent style={{ flexGrow: 1, padding: '10px' }}>
                                         <Typography variant="h6" style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                                            {item.product?.name || 'N/A'}
+                                            {item.product?.name || 'Sales Closed on this Product'}
                                         </Typography>
                                         <Typography variant="body2" style={{ fontSize: '0.875rem' }}>
-                                            Brand: {item.product?.brand || 'N/A'}
+                                            Brand: {item.product?.brand || 'Unavailable'}
                                         </Typography>
                                         <Typography variant="body2" style={{ fontSize: '0.875rem' }}>
                                             Qty: {item.quantity}

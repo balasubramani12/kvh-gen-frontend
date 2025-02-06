@@ -31,7 +31,7 @@ const Footer = () => {
                 </Typography>
                 <IconButton
                     component={MuiLink}
-                    href="https://www.facebook.com"
+                    href="https://www.facebook.com/hbalasubramani.shetty"
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{ color: '#fff' }}
@@ -40,7 +40,7 @@ const Footer = () => {
                 </IconButton>
                 <IconButton
                     component={MuiLink}
-                    href="https://www.instagram.com"
+                    href="https://www.instagram.com/kvhgenstore/"
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{ color: '#fff' }}
@@ -49,7 +49,7 @@ const Footer = () => {
                 </IconButton>
                 <IconButton
                     component={MuiLink}
-                    href="https://www.twitter.com"
+                    href="https://x.com/BaluHarishankar?t=Pis18Yllc9irnbqAhlgMxA&s=09"
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{ color: '#fff' }}
