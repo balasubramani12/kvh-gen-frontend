@@ -283,7 +283,7 @@ const CartPage = () => {
                                 {/* Product Card */}
                                 <Card
                                     style={{
-                                        backgroundColor: '#E9EED9',
+                                        backgroundColor: '#FFFFFF',
                                         color: '#000',
                                         height: '100%',
                                         display: 'flex',

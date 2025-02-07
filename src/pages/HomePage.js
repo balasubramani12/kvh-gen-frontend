@@ -42,6 +42,34 @@ const HomePage = () => {
       </motion.div>
 
       {/* Additional Content Section */}
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        style={styles.additionalContent}
+      >
+        <h2 style={styles.contentTitle2}>Effortless Shopping with Our Smart Cart!</h2>
+
+        <ul style={styles.list}>
+          <li>🚀 <strong>Step 1:</strong> Sign up or log in to our website.</li>
+          <li>🛒 <strong>Step 2:</strong> Browse and add products to your cart.</li>
+          <li>📄 <strong>Step 3:</strong> Download your cart as a PDF with one click.</li>
+          <li>📲 <strong>Step 4:</strong> Send the PDF to us via WhatsApp.</li>
+          <li>📞 <strong>Step 5:</strong> Give us a quick call to confirm your order.</li>
+          <li>📢 <strong>Step 6:</strong> We’ll notify you when your order is ready—just drop by and pick it up. 
+            No hassle, no wait!
+          </li>
+        </ul>
+
+        <p style={styles.contentDescription}>
+          💡 <strong>KVH General Store – Making Shopping Fast, Easy, and Hassle-Free!</strong>
+        </p>
+
+        <p>✨ "Want the <strong>Best</strong>? Skip the <strong>Rest!</strong>" ✨</p>
+      </motion.div>
+
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -112,6 +140,12 @@ const styles = {
     fontSize: '1.5rem',
     fontWeight: 'bold',
     color: '#B82132', // Blue color
+    marginBottom: '10px',
+  },
+  contentTitle2: {
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    color: '#4C7B8B', // Blue color
     marginBottom: '10px',
   },
   contentDescription: {
