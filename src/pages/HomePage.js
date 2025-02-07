@@ -48,16 +48,15 @@ const HomePage = () => {
         transition={{ delay: 1, duration: 1 }}
         style={styles.additionalContent}
       >
-        <h2 style={styles.contentTitle}>Why Choose Us?</h2>
+        <h2 style={styles.contentTitle}>For Better Experience</h2>
+        
+        <ul style={styles.list}>
+          <li>Click on the three dots in the top-right corner.</li>
+          <li>Select and mark the option "Desktop Site" by ticking it.</li>
+        </ul>
         <p style={styles.contentDescription}>
           At KVH General Store, we offer high-quality products at unbeatable prices. Our mission is to provide you with a seamless shopping experience.
         </p>
-        <ul style={styles.list}>
-          <li>Wide range of products</li>
-          <li>Fast and reliable delivery</li>
-          <li>24/7 customer support</li>
-          <li>Exclusive discounts and offers</li>
-        </ul>
       </motion.div>
     </div>
   );
@@ -112,7 +111,7 @@ const styles = {
   contentTitle: {
     fontSize: '1.5rem',
     fontWeight: 'bold',
-    color: '#3498DB', // Blue color
+    color: '#B82132', // Blue color
     marginBottom: '10px',
   },
   contentDescription: {

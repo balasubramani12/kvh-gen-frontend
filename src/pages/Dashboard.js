@@ -65,6 +65,11 @@ const Dashboard = () => {
         <Typography variant="body1" gutterBottom>
           Ready to shop? Click below to get started.
         </Typography>
+        <Typography variant="body1" gutterBottom>
+          Note: 
+          1. Click on 3dots on Right Top Corner.
+          2. Tick on "Desktop Site" for better User Interface
+        </Typography>
       </motion.div>
 
       {/* Button Animation */}
