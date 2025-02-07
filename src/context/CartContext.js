@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const CartContext = createContext();
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
@@ -14,7 +15,7 @@ export const CartProvider = ({ children }) => {
             if (!userId) {
                 throw new Error('User not logged in');
             }
-            const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+            const response = await axios.get(`${backendUrl}/api/cart/${userId}`);
             setCartItems(response.data.items); // Update cart state
             
         } catch (error) {
@@ -41,7 +42,7 @@ export const CartProvider = ({ children }) => {
             if (!userId) {
                 throw new Error('User not logged in');
             }
-            const response = await axios.post('http://localhost:5000/api/cart/add', {
+            const response = await axios.post(`${backendUrl}/api/cart/add`, {
                 userId,
                 productId,
                 quantity,
@@ -61,7 +62,7 @@ export const CartProvider = ({ children }) => {
             if (!userId) {
                 throw new Error('User not logged in');
             }
-            const response = await axios.put(`http://localhost:5000/api/cart/update/${userId}/${productId}`, {
+            const response = await axios.put(`${backendUrl}/api/cart/update/${userId}/${productId}`, {
                 quantity,
             });
             setCartItems(response.data.cart.items); // Update cart state
@@ -79,7 +80,7 @@ export const CartProvider = ({ children }) => {
             if (!userId) {
                 throw new Error('User not logged in');
             }
-            const response = await axios.delete(`http://localhost:5000/api/cart/remove/${userId}/${productId}`);
+            const response = await axios.delete(`${backendUrl}/api/cart/remove/${userId}/${productId}`);
             setCartItems(response.data.cart.items); // Update cart state
             refreshCart(); // Auto-refresh cart
         } catch (error) {
@@ -95,7 +96,7 @@ export const CartProvider = ({ children }) => {
             if (!userId) {
                 throw new Error('User not logged in');
             }
-            const response = await axios.delete('http://localhost:5000/api/cart/clear', {
+            const response = await axios.delete(`${backendUrl}/api/cart/clear`, {
                 data: { userId },
             });
             setCartItems([]); // Clear cart state
@@ -113,7 +114,7 @@ export const CartProvider = ({ children }) => {
             if (!userId) {
                 throw new Error('User not logged in');
             }
-            const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+            const response = await axios.get(`${backendUrl}/api/cart/${userId}`);
             setCartItems(response.data.items); // Update cart state
         } catch (error) {
             console.error('Error refreshing cart:', error);

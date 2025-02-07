@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const SignupPage = () => {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
@@ -63,7 +63,7 @@ const SignupPage = () => {
 
         try {
             // Call the backend signup API
-            await axios.post('http://localhost:5000/api/users/signup', {
+            await axios.post(`${backendUrl}/api/users/signup`, {
                 name,
                 mobile, // Include mobile number in the request payload
                 username,

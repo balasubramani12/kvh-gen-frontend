@@ -1,9 +1,12 @@
 import axios from 'axios';
 
+// Use the environment variable for the backend URL
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 // Add item to cart
 export const addToCart = async (userId, productId, quantity) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/cart/add', {
+        const response = await axios.post(`${backendUrl}/api/cart/add`, {
             userId,
             productId,
             quantity,
@@ -18,7 +21,7 @@ export const addToCart = async (userId, productId, quantity) => {
 // Update cart item quantity
 export const updateCartItem = async (userId, productId, quantity) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/cart/update', {
+        const response = await axios.put(`${backendUrl}/api/cart/update`, {
             userId,
             productId,
             quantity,
@@ -33,7 +36,7 @@ export const updateCartItem = async (userId, productId, quantity) => {
 // Remove item from cart
 export const removeFromCart = async (userId, productId) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/cart/remove/${productId}`, {
+        const response = await axios.delete(`${backendUrl}/api/cart/remove/${productId}`, {
             data: { userId },
         });
         return response.data; // Return updated cart items
@@ -46,7 +49,7 @@ export const removeFromCart = async (userId, productId) => {
 // Clear cart
 export const clearCart = async (userId) => {
     try {
-        const response = await axios.delete('http://localhost:5000/api/cart/clear', {
+        const response = await axios.delete(`${backendUrl}/api/cart/clear`, {
             data: { userId },
         });
         return response.data; // Return cleared cart

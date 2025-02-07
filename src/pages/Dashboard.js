@@ -4,6 +4,8 @@ import { Typography, Button, Container } from '@mui/material';
 import axios from 'axios';
 import { motion } from 'framer-motion'; // For animations
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const Dashboard = () => {
   const [userName, setUserName] = useState(null); // State to store the user's name
 
@@ -29,7 +31,7 @@ const Dashboard = () => {
           return;
         }
         // Fetch user details from the backend
-        const response = await axios.get(`http://localhost:5000/api/users/${userId}`);
+        const response = await axios.get(`${backendUrl}/api/users/${userId}`);
         setUserName(response.data.name); // Store the user's name in state
       } catch (error) {
         console.error('Error fetching user details:', error);

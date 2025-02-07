@@ -31,6 +31,8 @@ const CartPage = () => {
     const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
 
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
     // Fetch user details
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -40,7 +42,7 @@ const CartPage = () => {
                     console.error('User ID not found in localStorage');
                     return;
                 }
-                const response = await axios.get(`http://localhost:5000/api/users/${userId}`);
+                const response = await axios.get(`${backendUrl}/api/users/${userId}`);
                 setUserDetails(response.data);
             } catch (error) {
                 console.error('Error fetching user details:', error);

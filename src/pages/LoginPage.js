@@ -12,6 +12,8 @@ import {
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -48,7 +50,7 @@ const LoginPage = () => {
 
         try {
             // Call the backend login API
-            const response = await axios.post('http://localhost:5000/api/users/login', {
+            const response = await axios.post(`${backendUrl}/api/users/login`, {
                 username,
                 pwd: password,
             });

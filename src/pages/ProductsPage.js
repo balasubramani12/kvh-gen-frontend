@@ -20,6 +20,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Success tick icon
 import { CartContext } from '../context/CartContext';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const ProductsPage = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -78,7 +80,7 @@ const ProductsPage = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/products/all');
+                const response = await axios.get(`${backendUrl}/api/products/all`);
                 setProducts(response.data);
                 setFilteredProducts(response.data); // Initially show all products
             } catch (error) {

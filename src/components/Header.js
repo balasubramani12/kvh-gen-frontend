@@ -12,6 +12,7 @@ import {
     ListItemText,
     Box,
 } from '@mui/material';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Header = () => {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
