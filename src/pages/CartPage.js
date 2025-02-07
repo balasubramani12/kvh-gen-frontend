@@ -20,6 +20,8 @@ import axios from 'axios';
 import jsPDF from 'jspdf';
 import { Link } from 'react-router-dom';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const CartPage = () => {
     const { cartItems, updateCartItem, removeFromCart, clearCart, fetchCart } = useContext(CartContext);
     const [userDetails, setUserDetails] = useState(null);
@@ -31,7 +33,7 @@ const CartPage = () => {
     const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
 
-    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    
 
     // Fetch user details
     useEffect(() => {
