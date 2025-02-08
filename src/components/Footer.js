@@ -18,6 +18,7 @@ const Footer = () => {
                 color: '#fff',
                 padding: '10px 20px',
                 display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' }, // Stack vertically on small screens
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 boxShadow: '0 -2px 5px rgba(0, 0, 0, 0.2)', // Subtle shadow for depth
@@ -25,7 +26,13 @@ const Footer = () => {
             }}
         >
             {/* Left Section: Social Media Links */}
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: { xs: '10px', sm: 0 }, // Add margin for stacking on small screens
+                }}
+            >
                 <Typography variant="body2" sx={{ marginRight: '10px' }}>
                     Follow us:
                 </Typography>
@@ -34,7 +41,12 @@ const Footer = () => {
                     href="https://www.facebook.com/hbalasubramani.shetty"
                     target="_blank"
                     rel="noopener noreferrer"
-                    sx={{ color: '#fff' }}
+                    sx={{
+                        color: '#fff',
+                        transition: 'transform 0.3s ease-in-out',
+                        '&:hover': { transform: 'scale(1.2)' },
+                    }}
+                    aria-label="Follow us on Facebook"
                 >
                     <FacebookIcon />
                 </IconButton>
@@ -43,7 +55,12 @@ const Footer = () => {
                     href="https://www.instagram.com/kvhgenstore/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    sx={{ color: '#fff' }}
+                    sx={{
+                        color: '#fff',
+                        transition: 'transform 0.3s ease-in-out',
+                        '&:hover': { transform: 'scale(1.2)' },
+                    }}
+                    aria-label="Follow us on Instagram"
                 >
                     <InstagramIcon />
                 </IconButton>
@@ -52,23 +69,45 @@ const Footer = () => {
                     href="https://x.com/BaluHarishankar?t=Pis18Yllc9irnbqAhlgMxA&s=09"
                     target="_blank"
                     rel="noopener noreferrer"
-                    sx={{ color: '#fff' }}
+                    sx={{
+                        color: '#fff',
+                        transition: 'transform 0.3s ease-in-out',
+                        '&:hover': { transform: 'scale(1.2)' },
+                    }}
+                    aria-label="Follow us on Twitter"
                 >
                     <TwitterIcon />
                 </IconButton>
             </Box>
 
             {/* Center Section: Copyright Text */}
-            <Typography variant="body2" sx={{ textAlign: 'center' }}>
+            <Typography
+                variant="body2"
+                sx={{
+                    textAlign: 'center',
+                    marginBottom: { xs: '10px', sm: 0 }, // Add margin for stacking on small screens
+                }}
+            >
                 © {new Date().getFullYear()} KVH General Store. All rights reserved.
             </Typography>
 
             {/* Right Section: Contact Info */}
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: { xs: 'center', sm: 'flex-end' }, // Center align on small screens
+                }}
+            >
                 <IconButton
                     component={MuiLink}
                     href="mailto:contact.kvhgenstore@gmail.com"
-                    sx={{ color: '#fff' }}
+                    sx={{
+                        color: '#fff',
+                        transition: 'transform 0.3s ease-in-out',
+                        '&:hover': { transform: 'scale(1.2)' },
+                    }}
+                    aria-label="Send an email to KVH General Store"
                 >
                     <EmailIcon />
                 </IconButton>

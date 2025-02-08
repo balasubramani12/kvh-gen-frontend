@@ -11,22 +11,26 @@ import {
     ListItem,
     ListItemText,
     Box,
+    useMediaQuery,
+    useTheme,
 } from '@mui/material';
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Header = () => {
-    const [drawerOpen, setDrawerOpen] = React.useState(false);
-    const [logoutNotification, setLogoutNotification] = React.useState(false); // State for logout notification
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [logoutNotification, setLogoutNotification] = useState(false);
     const navigate = useNavigate();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    // Helper function to safely retrieve the user from localStorage
     const getUserIdFromLocalStorage = () => {
         const user = localStorage.getItem('user');
         try {
-            const parsedUser = JSON.parse(user); // Try parsing as JSON
-            return parsedUser._id || user; // Return _id if parsed, else return raw value
+            const parsedUser = JSON.parse(user);
+            return parsedUser._id || user;
         } catch (error) {
-            return user; // If parsing fails, assume it's already a string
+            return user;
         }
     };
 
@@ -38,34 +42,24 @@ const Header = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('user'); // Remove user from localStorage
-        localStorage.removeItem('loginEvent'); // Clear login event
-
-        // Show logout notification
+        localStorage.removeItem('user');
+        localStorage.removeItem('loginEvent');
         setLogoutNotification(true);
-
-        // Hide the notification after 3 seconds
         setTimeout(() => {
             setLogoutNotification(false);
-        }, 3000); // Increased duration to 3 seconds
-
-        window.location.reload(); // Refresh the page to reflect logout
-        navigate('/login'); // Redirect to login page
+        }, 3000);
+        window.location.reload();
+        navigate('/login');
     };
 
     const isLoggedIn = !!localStorage.getItem('user');
     const userId = isLoggedIn ? getUserIdFromLocalStorage() : null;
 
-    // Detect login/logout changes via storage events
     React.useEffect(() => {
         const handleStorageChange = () => {
-            // If the user logs in or out, refresh the page
             window.location.reload();
         };
-
-        // Listen for storage events
         window.addEventListener('storage', handleStorageChange);
-
         return () => {
             window.removeEventListener('storage', handleStorageChange);
         };
@@ -73,15 +67,14 @@ const Header = () => {
 
     return (
         <AppBar
-            position="sticky" // Make the header sticky
+            position="sticky"
             style={{
                 background: '#526E48',
-                top: 0, // Ensure it sticks to the top
-                zIndex: 1000, // Ensure it stays above other content
+                top: 0,
+                zIndex: 1000,
             }}
         >
             <Toolbar>
-                {/* Store Name */}
                 <Typography
                     variant="h6"
                     style={{ flexGrow: 1, color: '#fff', fontWeight: 'bold' }}
@@ -90,48 +83,51 @@ const Header = () => {
                 </Typography>
 
                 {/* Desktop Navbar */}
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
-                        Home
-                    </Link>
-                    <Link to="/products" style={{ textDecoration: 'none', color: '#fff' }}>
-                        Products
-                    </Link>
-                    <Link to="/cart" style={{ textDecoration: 'none', color: '#fff' }}>
-                        Cart
-                    </Link>
-                    <Link to="/contact" style={{ textDecoration: 'none', color: '#fff' }}>
-                        Contact
-                    </Link>
-                    {isLoggedIn ? (
-                        <button
-                            style={{
-                                color: '#fff',
-                                background: 'transparent',
-                                border: 'none',
-                                cursor: 'pointer',
-                            }}
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
-                    ) : (
-                        <Link to="/login" style={{ textDecoration: 'none', color: '#fff' }}>
-                            Login
+                {!isMobile && (
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
+                            Home
                         </Link>
-                    )}
-                </div>
+                        <Link to="/products" style={{ textDecoration: 'none', color: '#fff' }}>
+                            Products
+                        </Link>
+                        <Link to="/cart" style={{ textDecoration: 'none', color: '#fff' }}>
+                            Cart
+                        </Link>
+                        <Link to="/contact" style={{ textDecoration: 'none', color: '#fff' }}>
+                            Contact
+                        </Link>
+                        {isLoggedIn ? (
+                            <button
+                                style={{
+                                    color: '#fff',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                }}
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <Link to="/login" style={{ textDecoration: 'none', color: '#fff' }}>
+                                Login
+                            </Link>
+                        )}
+                    </div>
+                )}
 
                 {/* Mobile Hamburger Menu */}
-                <IconButton
-                    edge="end"
-                    color="inherit"
-                    aria-label="menu"
-                    onClick={toggleDrawer(true)}
-                    sx={{ display: { xs: 'block', sm: 'none' } }}
-                >
-                    <MenuIcon />
-                </IconButton>
+                {isMobile && (
+                    <IconButton
+                        edge="end"
+                        color="inherit"
+                        aria-label="menu"
+                        onClick={toggleDrawer(true)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                )}
 
                 {/* Mobile Drawer */}
                 <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
@@ -206,6 +202,7 @@ const styles = `
     }
 }
 `;
+
 // Inject CSS into the document
 const styleSheet = document.createElement('style');
 styleSheet.type = 'text/css';
