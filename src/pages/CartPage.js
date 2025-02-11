@@ -12,6 +12,7 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Box,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -33,8 +34,6 @@ const CartPage = () => {
     const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
 
-    
-
     // Fetch user details
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -52,6 +51,15 @@ const CartPage = () => {
         };
         fetchUserDetails();
     }, []);
+
+    // Calculate approximate total
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => {
+            const price = item.product?.price || 0; // Default to 0 if price is unavailable
+            const quantity = item.quantity || 0; // Default to 0 if quantity is unavailable
+            return total + price * quantity;
+        }, 0);
+    };
 
     // Refresh cart manually
     const handleRefreshCart = async () => {
@@ -76,7 +84,6 @@ const CartPage = () => {
             doc.setFont('helvetica', 'bold');
             doc.text(`Name: ${userDetails?.name || 'N/A'}`, 10, 15);
             doc.text(`Mobile no: ${userDetails?.mobile || 'N/A'}`, 10, 20);
-
             // Add table headers
             doc.setFontSize(10);
             doc.setTextColor(255, 0, 0); // Red color for headers
@@ -86,8 +93,6 @@ const CartPage = () => {
             doc.text('Product Name', 65, 30);
             doc.text('Qty', 135, 30);
             doc.text('Category', 150, 30);
-            
-
             // Add cart items
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(0, 0, 0); // Black color for content
@@ -98,18 +103,19 @@ const CartPage = () => {
                 doc.text(item.product?.name || 'N/A', 65, yPosition);
                 doc.text(`${item.quantity}`, 135, yPosition);
                 doc.text(item.product?.category || 'N/A', 150, yPosition);
-                
             });
-
+            // Add approx total
+            const totalYPosition = 40 + (cartItems.length * 10) + 10;
+            doc.setFontSize(12);
+            doc.setTextColor(255, 0, 0); // Red color for total
+            doc.text(`Approx Amount In Rs: ${calculateTotal().toFixed(2)}`, 10, totalYPosition);
             // Add timestamp at the bottom
             const date = new Date().toLocaleString();
             doc.setTextColor(0, 0, 255); // Blue color for timestamp
-            doc.text(`Downloaded on: ${date}`, 10, 40 + (cartItems.length * 10) + 10);
-
+            doc.text(`Downloaded on: ${date}`, 10, totalYPosition + 10);
             // Save the PDF
             const filename = userDetails?.name ? `${userDetails.name}-cart.pdf` : 'cart-items.pdf';
             doc.save(filename);
-
             // Show download animation
             setShowDownloadAnimation(true);
             setTimeout(() => {
@@ -153,9 +159,28 @@ const CartPage = () => {
     };
 
     return (
-        <div style={{ padding: '20px', position: 'relative' }}>
+        <>
+            {/* Approx Total */}
+            <Typography
+                variant="h6"
+                sx={{
+                    textAlign: 'center',
+                    marginBottom: '20px',
+                    color: '#0A5EB0',
+                    fontWeight: 'bold',
+                }}
+            >
+                Approx Amount: ₹{calculateTotal().toFixed(2)}
+            </Typography>
+
+            
             {/* Refresh Cart Button */}
             <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+                <Typography variant="body1" style={{ color: 'black', fontWeight: 'bold' }}>
+                Note: The total amount shown is an approximate estimate.
+                The final billing price may be higher or lower based on actual product availability, discounts etc.
+                </Typography>
+                <br/>
                 <Typography variant="body1" style={{ color: 'red', fontWeight: 'bold' }}>
                     Sorry for the inconvenience! If you are facing any issues in the cart, please press the button below or Clear Cart:
                 </Typography>
@@ -169,8 +194,8 @@ const CartPage = () => {
                 </Button>
             </div>
 
-            {/* Download Animation */}
-            {showDownloadAnimation && (
+             {/* Download Animation */}
+             {showDownloadAnimation && (
                 <div
                     style={{
                         position: 'fixed',
@@ -194,7 +219,7 @@ const CartPage = () => {
                 </div>
             )}
 
-            {/* Remove All Animation */}
+           {/* Remove All Animation */}
             {showRemoveAllAnimation && (
                 <div
                     style={{
@@ -248,12 +273,14 @@ const CartPage = () => {
                 </div>
             )}
 
-            <Typography variant="h4" gutterBottom>
+            {/* Cart Title */}
+            <Typography variant="h4" sx={{ textAlign: 'center', marginBottom: '20px' }}>
                 Your Cart
             </Typography>
 
+            {/* Cart Items */}
             {cartItems.length > 0 ? (
-                <Grid container spacing={3}>
+                <Grid container spacing={2}>
                     {cartItems.map((item, index) => {
                         const productId = item.product?._id;
 
@@ -279,50 +306,39 @@ const CartPage = () => {
                         };
 
                         return (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                {/* Product Card */}
-                                <Card
-                                    style={{
-                                        backgroundColor: '#FFFFFF',
-                                        color: '#000',
-                                        height: '100%',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        position: 'relative',
-                                    }}
-                                >
-                                    {/* Product Image */}
-                                    <CardMedia
-                                        component="img"
-                                        height="140"
-                                        image={item.product?.img || 'https://via.placeholder.com/500'}
-                                        alt={item.product?.name || 'Product'}
-                                        style={{
-                                            objectFit: 'contain',
-                                            width: '100%',
-                                            height: '140px',
-                                        }}
-                                    />
-
-                                    {/* Product Details */}
-                                    <CardContent style={{ flexGrow: 1, padding: '10px' }}>
-                                        <Typography variant="h6" style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+                            <Grid item xs={12} sm={6} md={4} key={productId}>
+                                <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                                    <CardContent sx={{ flexGrow: 1, padding: '10px' }}>
+                                        {/* Product Image */}
+                                        <CardMedia
+                                            component="img"
+                                            height="80" // Reduced height for smaller cards
+                                            image={item.product?.img || 'https://via.placeholder.com/150'}
+                                            alt={item.product?.name || 'Product Image'}
+                                            sx={{ marginBottom: '10px' }}
+                                            style={{
+                                                objectFit: 'contain',
+                                                width: '100%',
+                                                height: '140px',
+                                            }}
+                                        />
+                                        {/* Product Details */}
+                                        <Typography variant="subtitle1" sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
                                             {item.product?.name || 'Sales Closed on this Product'}
                                         </Typography>
-                                        <Typography variant="body2" style={{ fontSize: '0.875rem' }}>
+                                        <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
                                             Brand: {item.product?.brand || 'Unavailable'}
                                         </Typography>
-                                        <Typography variant="body2" style={{ fontSize: '0.875rem' }}>
+                                        <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
                                             Qty: {item.quantity}
                                         </Typography>
                                     </CardContent>
-
                                     {/* Actions */}
-                                    <div style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
                                         {/* Update Quantity Field */}
                                         <TextField
                                             type="number"
-                                            value={localQuantities[productId] || item.quantity}
+                                            defaultValue={item.quantity}
                                             onChange={handleQuantityChange}
                                             onBlur={() =>
                                                 setLocalQuantities((prev) => ({
@@ -331,82 +347,94 @@ const CartPage = () => {
                                                 }))
                                             }
                                             inputProps={{ min: 1 }}
-                                            style={{
+                                            size="small"
+                                            sx={{
                                                 flexGrow: 1,
-                                                fontSize: '0.875rem',
+                                                fontSize: '0.8rem',
                                                 backgroundColor: '#9A7E6F',
-                                                border: 'none none rgb(140, 107, 89)',
-                                                borderRadius: '10px',
+                                                border: '2px solid rgb(106, 42, 7)',
+                                                borderRadius: '5px',
                                                 padding: '5px',
                                             }}
                                         />
                                         {/* Tick Button */}
-                                        <IconButton onClick={handleUpdateQuantity} style={{ marginLeft: '10px' }}>
-                                            <CheckCircleIcon style={{ color: '#4CAF50' }} />
+                                        <IconButton onClick={handleUpdateQuantity} sx={{ marginLeft: '10px', color: 'green' }}>
+                                            <CheckCircleIcon />
                                         </IconButton>
                                         {/* Remove Button */}
-                                        <IconButton
-                                            onClick={() => handleRemoveItem(productId)}
-                                            style={{ marginLeft: '10px', color: '#FF5722' }}
-                                        >
+                                        <IconButton onClick={() => handleRemoveItem(productId)} sx={{ marginLeft: '10px', color: '#FF5722' }}>
                                             <DeleteIcon />
                                         </IconButton>
-                                    </div>
+                                    </Box>
                                 </Card>
                             </Grid>
                         );
                     })}
                 </Grid>
             ) : (
-                <Typography variant="h6" style={{ textAlign: 'center', width: '100%' }}>
+                <Typography variant="body1" sx={{ textAlign: 'center', marginTop: '20px' }}>
                     Your cart is empty.
                 </Typography>
             )}
 
             {/* Action Buttons */}
-            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginTop: '20px',
+                    flexWrap: 'wrap',
+                    gap: '10px',
+                }}
+            >
                 {/* Remove All Button */}
                 <Button
                     variant="contained"
-                    color="error"
                     onClick={handleRemoveAll}
-                    disabled={cartItems.length === 0}
+                    sx={{
+                        backgroundColor: '#B82132',
+                        '&:hover': { backgroundColor: '#E53935' },
+                        flex: { xs: '1 1 100%', sm: '0 1 auto' },
+                    }}
                 >
                     Remove All
                 </Button>
                 {/* Continue Shopping Button */}
                 <Button
                     variant="contained"
-                    color="primary"
                     component={Link}
                     to="/products"
+                    sx={{
+                        backgroundColor: '#605678',
+                        '&:hover': { backgroundColor: '#526E48' },
+                        flex: { xs: '1 1 100%', sm: '0 1 auto' },
+                    }}
                 >
                     Continue Shopping
                 </Button>
                 {/* Download Cart as PDF Button */}
                 <Button
                     variant="contained"
-                    color="primary"
                     onClick={downloadCartAsPDF}
-                    disabled={cartItems.length === 0}
+                    sx={{
+                        backgroundColor: '#2A3335',
+                        '&:hover': { backgroundColor: '#2E5B17' },
+                        flex: { xs: '1 1 100%', sm: '0 1 auto' },
+                    }}
                 >
                     Download Cart as PDF
                 </Button>
-            </div>
+            </Box>
 
             {/* Confirmation Dialog for Remove All */}
             <Dialog open={confirmRemoveAllDialogOpen} onClose={() => setConfirmRemoveAllDialogOpen(false)}>
                 <DialogTitle>Confirm Remove All</DialogTitle>
-                <DialogContent>
-                    <Typography variant="body1">
-                        Are you sure you want to remove all items from your cart?
-                    </Typography>
-                </DialogContent>
+                <DialogContent>Are you sure you want to remove all items from your cart?</DialogContent>
                 <DialogActions>
                     <Button onClick={() => setConfirmRemoveAllDialogOpen(false)} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={confirmAndRemoveAll} color="error" variant="contained">
+                    <Button onClick={confirmAndRemoveAll} color="secondary">
                         Remove All
                     </Button>
                 </DialogActions>
@@ -415,21 +443,17 @@ const CartPage = () => {
             {/* Confirmation Dialog for Single Item Deletion */}
             <Dialog open={confirmDeleteDialogOpen} onClose={() => setConfirmDeleteDialogOpen(false)}>
                 <DialogTitle>Confirm Deletion</DialogTitle>
-                <DialogContent>
-                    <Typography variant="body1">
-                        Are you sure you want to remove this item from your cart?
-                    </Typography>
-                </DialogContent>
+                <DialogContent>Are you sure you want to remove this item from your cart?</DialogContent>
                 <DialogActions>
                     <Button onClick={() => setConfirmDeleteDialogOpen(false)} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={confirmAndRemoveItem} color="error" variant="contained">
+                    <Button onClick={confirmAndRemoveItem} color="secondary">
                         Delete
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </>
     );
 };
 
@@ -445,7 +469,6 @@ const styles = `
         transform: translate(-50%, -50%) scale(1);
     }
 }
-
 @keyframes slideOut {
     0% {
         opacity: 1;
@@ -457,7 +480,6 @@ const styles = `
     }
 }
 `;
-
 // Inject CSS into the document
 const styleSheet = document.createElement('style');
 styleSheet.type = 'text/css';
