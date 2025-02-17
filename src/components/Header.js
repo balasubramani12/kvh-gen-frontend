@@ -8,6 +8,7 @@ import {
     IconButton,
     Drawer,
     List,
+    Divider,
     ListItem,
     ListItemText,
     Box,
@@ -15,7 +16,7 @@ import {
     useTheme,
 } from '@mui/material';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
 const Header = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -24,6 +25,7 @@ const Header = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+    // Helper function to safely retrieve the user ID from localStorage
     const getUserIdFromLocalStorage = () => {
         const user = localStorage.getItem('user');
         try {
@@ -34,6 +36,7 @@ const Header = () => {
         }
     };
 
+    // Toggle mobile drawer
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -41,6 +44,7 @@ const Header = () => {
         setDrawerOpen(open);
     };
 
+    // Handle logout
     const handleLogout = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('loginEvent');
@@ -52,9 +56,11 @@ const Header = () => {
         navigate('/login');
     };
 
+    // Check if the user is logged in
     const isLoggedIn = !!localStorage.getItem('user');
     const userId = isLoggedIn ? getUserIdFromLocalStorage() : null;
 
+    // Listen for storage changes
     React.useEffect(() => {
         const handleStorageChange = () => {
             window.location.reload();
@@ -75,6 +81,7 @@ const Header = () => {
             }}
         >
             <Toolbar>
+                {/* App Title */}
                 <Typography
                     variant="h6"
                     style={{ flexGrow: 1, color: '#fff', fontWeight: 'bold' }}
@@ -88,12 +95,16 @@ const Header = () => {
                         <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
                             Home
                         </Link>
-                        <Link to="/products" style={{ textDecoration: 'none', color: '#fff' }}>
-                            Products
-                        </Link>
-                        <Link to="/cart" style={{ textDecoration: 'none', color: '#fff' }}>
-                            Cart
-                        </Link>
+                        {isLoggedIn && (
+                            <>
+                                <Link to="/products" style={{ textDecoration: 'none', color: '#fff' }}>
+                                    Products
+                                </Link>
+                                <Link to="/cart" style={{ textDecoration: 'none', color: '#fff' }}>
+                                    Cart
+                                </Link>
+                            </>
+                        )}
                         <Link to="/contact" style={{ textDecoration: 'none', color: '#fff' }}>
                             Contact
                         </Link>
@@ -129,21 +140,47 @@ const Header = () => {
                     </IconButton>
                 )}
 
-                {/* Mobile Drawer */}
-                <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+               {/* Mobile Drawer */}
+                <Drawer
+                    anchor="right"
+                    open={drawerOpen}
+                    onClose={toggleDrawer(false)}
+                    PaperProps={{
+                        sx: {
+                            backgroundColor: '#FBFFE4', // Light background color
+                            width: '180px', // Fixed width for consistency
+                        },
+                    }}
+                >
                     <List>
+                        {/* Home */}
                         <ListItem button onClick={() => { navigate('/'); toggleDrawer(false)(); }}>
                             <ListItemText primary="Home" />
                         </ListItem>
-                        <ListItem button onClick={() => { navigate('/products'); toggleDrawer(false)(); }}>
-                            <ListItemText primary="Products" />
-                        </ListItem>
-                        <ListItem button onClick={() => { navigate('/cart'); toggleDrawer(false)(); }}>
-                            <ListItemText primary="Cart" />
-                        </ListItem>
+                        <Divider /> {/* Horizontal line after Home */}
+
+                        {/* Products (Visible only if logged in) */}
+                        {isLoggedIn && (
+                            <>
+                                <ListItem button onClick={() => { navigate('/products'); toggleDrawer(false)(); }}>
+                                    <ListItemText primary="Products" />
+                                </ListItem>
+                                <Divider /> {/* Horizontal line after Products */}
+
+                                <ListItem button onClick={() => { navigate('/cart'); toggleDrawer(false)(); }}>
+                                    <ListItemText primary="Cart" />
+                                </ListItem>
+                                <Divider /> {/* Horizontal line after Cart */}
+                            </>
+                        )}
+
+                        {/* Contact */}
                         <ListItem button onClick={() => { navigate('/contact'); toggleDrawer(false)(); }}>
                             <ListItemText primary="Contact" />
                         </ListItem>
+                        <Divider /> {/* Horizontal line after Contact */}
+
+                        {/* Login/Logout */}
                         {isLoggedIn ? (
                             <ListItem button onClick={handleLogout}>
                                 <ListItemText primary="Logout" />
@@ -153,6 +190,7 @@ const Header = () => {
                                 <ListItemText primary="Login" />
                             </ListItem>
                         )}
+                        <Divider /> {/* Horizontal line after Login/Logout */}
                     </List>
                 </Drawer>
             </Toolbar>
@@ -202,7 +240,6 @@ const styles = `
     }
 }
 `;
-
 // Inject CSS into the document
 const styleSheet = document.createElement('style');
 styleSheet.type = 'text/css';

@@ -1,13 +1,57 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'; // For animations
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  Button,
+} from '@mui/material';
 
 const HomePage = () => {
-  // Check if the user is logged in (you can use local storage or context API)
+  // Check if the user is logged in
   const isLoggedIn = localStorage.getItem('user') ? true : false;
 
+  // Step data with icons (emojis or SVGs)
+  const steps = [
+    {
+      title: 'Sign Up or Log In',
+      description: 'Create an account or log in to start shopping.',
+      icon: '🚀',
+    },
+    {
+      title: 'Browse Products',
+      description: 'Explore our wide range of products and add them to your cart.',
+      icon: '🛒',
+    },
+    {
+      title: 'Download Cart as PDF',
+      description: 'Download your cart details as a PDF file.',
+      icon: '📄',
+    },
+    {
+      title: 'Send via WhatsApp',
+      description: 'Share the PDF with us through WhatsApp.',
+      icon: '📲',
+    },
+    {
+      title: 'Confirm Your Order',
+      description: 'Give us a quick call to confirm your order.',
+      icon: '📞',
+    },
+    {
+      title: 'Pick Up Your Order',
+      description:
+        'We’ll notify you when your order is ready—just drop by and pick it up!',
+      icon: '📢',
+    },
+  ];
+
   return (
-    <div style={styles.container}>
+    <Box sx={styles.container}>
       {/* Title Animation */}
       <motion.h1
         initial={{ opacity: 0, y: -50 }}
@@ -30,63 +74,124 @@ const HomePage = () => {
           : 'Start shopping now and discover the best deals.'}
       </motion.p>
 
-      {/* Button Animation */}
+      {/* Start Shopping Button */}
       <motion.div
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         transition={{ type: 'spring', stiffness: 400, damping: 17 }}
       >
         <Link to="/products">
-          <button style={styles.button}>Start Shopping</button>
+          <Button variant="contained" sx={styles.button}>
+            Start Shopping
+          </Button>
         </Link>
       </motion.div>
 
-      {/* Additional Content Section */}
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        style={styles.additionalContent}
+      {/* Steps Section */}
+      <Typography
+        variant="h4"
+        sx={{
+          textAlign: 'center',
+          marginTop: '50px',
+          marginBottom: '30px',
+          color: '#4C7B8B',
+          fontWeight: 'bold',
+        }}
       >
-        <h2 style={styles.contentTitle2}>Effortless Shopping with Our Smart Cart!</h2>
+        Effortless Shopping with Our Smart Cart!
+      </Typography>
 
-        <ul style={styles.list}>
-          <li>🚀 <strong>Step 1:</strong> Sign up or log in to our website.</li>
-          <li>🛒 <strong>Step 2:</strong> Browse and add products to your cart.</li>
-          <li>📄 <strong>Step 3:</strong> Download your cart as a PDF with one click.</li>
-          <li>📲 <strong>Step 4:</strong> Send the PDF to us via WhatsApp.</li>
-          <li>📞 <strong>Step 5:</strong> Give us a quick call to confirm your order.</li>
-          <li>📢 <strong>Step 6:</strong> We’ll notify you when your order is ready—just drop by and pick it up. 
-            No hassle, no wait!
-          </li>
-        </ul>
+      <Grid container spacing={4} justifyContent="center">
+        {steps.map((step, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2, duration: 0.5 }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              <Card
+                sx={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #ddd',
+                  borderRadius: '15px',
+                  padding: '10px', // Reduced padding for smaller cards
+                  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    backgroundColor: '#f9f9f9',
+                    transform: 'scale(1.02)',
+                  },
+                }}
+              >
+                <CardContent sx={{ textAlign: 'center', padding: '10px' }}>
+                  {/* Step Number */}
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontSize: '1.2rem',
+                      fontWeight: 'bold',
+                      color: '#3E7B27',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    Step {index + 1}
+                  </Typography>
 
-        <p style={styles.contentDescription}>
-          💡 <strong>KVH General Store – Making Shopping Fast, Easy, and Hassle-Free!</strong>
-        </p>
+                  {/* Icon */}
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      fontSize: '1.5rem',
+                      color: '#3E7B27',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    {step.icon}
+                  </Typography>
 
-        <p>✨ "Want the <strong>Best</strong>? Skip the <strong>Rest!</strong>" ✨</p>
-      </motion.div>
+                  {/* Title */}
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: '#555',
+                      marginBottom: '5px',
+                    }}
+                  >
+                    {step.title}
+                  </Typography>
 
+                  {/* Description */}
+                  <Typography variant="body2" sx={{ color: '#777' }}>
+                    {step.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+        ))}
+      </Grid>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        style={styles.additionalContent}
-      >
-        <h2 style={styles.contentTitle}>For Better Experience</h2>
-        
+      {/* Additional Content */}
+      <Box sx={styles.additionalContent}>
+        <Typography variant="h5" sx={styles.contentTitle}>
+          For Better Experience
+        </Typography>
         <ul style={styles.list}>
           <li>Click on the three dots in the top-right corner.</li>
           <li>Select and mark the option "Desktop Site" by ticking it.</li>
         </ul>
-        <p style={styles.contentDescription}>
-          At KVH General Store, we offer high-quality products at unbeatable prices. Our mission is to provide you with a seamless shopping experience.
-        </p>
-      </motion.div>
-    </div>
+        <Typography variant="body1" sx={styles.contentDescription}>
+          At KVH General Store, we offer high-quality products at unbeatable
+          prices. Our mission is to provide you with a seamless shopping
+          experience.
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
@@ -118,9 +223,7 @@ const styles = {
     fontSize: '1rem',
     backgroundColor: '#3E7B27', // Greenish color
     color: '#fff',
-    border: 'none',
     borderRadius: '5px',
-    cursor: 'pointer',
     transition: 'background-color 0.3s ease',
     '&:hover': {
       backgroundColor: '#2ECC71', // Lighter green on hover
@@ -142,21 +245,15 @@ const styles = {
     color: '#B82132', // Blue color
     marginBottom: '10px',
   },
-  contentTitle2: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    color: '#4C7B8B', // Blue color
-    marginBottom: '10px',
+  list: {
+    paddingLeft: '20px',
+    fontSize: '1rem',
+    color: '#555',
   },
   contentDescription: {
     fontSize: '1rem',
     color: '#555',
     marginBottom: '20px',
-  },
-  list: {
-    paddingLeft: '20px',
-    fontSize: '1rem',
-    color: '#555',
   },
 };
 

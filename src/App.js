@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Footer from './components/Footer';
 import { CartProvider } from './context/CartContext';
 import Contact from './pages/ContactPage';
+
 function App() {
     return (
         <CartProvider>
@@ -36,13 +37,12 @@ function App() {
                             <Route path="/" element={<HomePage />} />
                             <Route path="/products" element={<ProductsPage />} />
                             <Route path="/cart" element={<CartPage />} />
-                            <Route path="/contact" element={<Contact/>} />
+                            <Route path="/contact" element={<Contact />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/signup" element={<SignupPage />} />
                             <Route path="/dashboard" element={<Dashboard />} />
                         </Routes>
                     </Box>
-
                     {/* Footer */}
                     <Footer />
                 </Box>

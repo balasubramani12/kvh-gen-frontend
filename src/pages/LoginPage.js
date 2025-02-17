@@ -62,6 +62,7 @@ const LoginPage = () => {
             localStorage.setItem('loginEvent', Date.now());
 
             // Redirect to Dashboard page
+            alert('Login Successful, You will be now navigated to Dashboard.....');
             navigate('/dashboard');
             window.location.reload();
         } catch (error) {

@@ -71,7 +71,7 @@ const SignupPage = () => {
                 role: 'user',
             });
 
-            // Redirect to Login page
+            alert('Signup Successfully Done!!!');
             navigate('/login');
         } catch (error) {
             if (error.response && error.response.data.message === 'User already exists') {
