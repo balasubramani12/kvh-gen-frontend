@@ -52,8 +52,9 @@ const Header = () => {
         setTimeout(() => {
             setLogoutNotification(false);
         }, 3000);
-        window.location.reload();
         navigate('/login');
+        window.location.reload();
+        
     };
 
     // Check if the user is logged in
