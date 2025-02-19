@@ -86,7 +86,7 @@ const Dashboard = () => {
         <Typography variant="h4" gutterBottom>
           Welcome back!{' '}
           <span style={{ color: '#FF5722', fontWeight: 'bold' }}>
-            {userName || 'Guest'}
+            {userName}
           </span>
         </Typography>
       </motion.div>
